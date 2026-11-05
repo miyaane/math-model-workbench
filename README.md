@@ -39,9 +39,3 @@ Windows 电脑取得项目后，在项目根目录运行 `powershell -NoProfile 
 ```
 
 尚未导入赛题时没有main.tex、研究结论或最终论文；论文相关检查应报告缺少输入，不能以空壳文件制造通过。
-
-## 发布与迁移
-
-GitHub只发布通用框架，cases/、workspace.json、.venv/和本机发布工具均忽略。另一台电脑按DEPLOYMENT.md重新部署；题目需要另外迁移。版本说明见CHANGELOG.md，工程验收范围见AUDIT.md。
-
-维护者发布步骤见[发布指引](docs/PUBLISH.md)。

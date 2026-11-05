@@ -1,16 +1,16 @@
 # 工作台通用工具
 
-## 可迁移Excel数值导出
+## Excel数值模板导出
 
 `python tools/export_excel.py manifest.json`仅用Python标准库将有限数值写入既有XLSX模板单元格。清单含template、output（相对清单目录）及updates（工作表名→单元格地址→数值）。保留未改ZIP部件和目标单元格样式、逐格回读、输出指纹，拒绝覆盖、未知表/格、非有限数及带公式模板；不承担公式重算或优化求解，也不声称支持所有Excel编辑功能。模板必须已经包含待填单元格。
 
-可选number_format只改变目标格的数字显示，复制原样式并保留字体/边框/对齐，存储数值不舍入。当前C题显示三位小数；70,602个值独立回读差为零。测试可用`python -S -m unittest discover -s tools -p test_export_excel.py`验证核心不依赖第三方运行库。图片预览仍可使用可选渲染工具，但不进入导出部署依赖。
+可选number_format只改变目标格的数字显示，复制原样式并保留字体/边框/对齐，存储数值不舍入。数字显示格式由各题要求决定。测试可用`python -S -m unittest discover -s tools -p test_export_excel.py`验证核心不依赖第三方运行库。图片预览仍可使用可选渲染工具，但不进入导出部署依赖。
 
-各题适配层负责稳定业务键映射、重复键/漏项、单位和约束检查，不能把年度、地块或作物位置固化进通用工具。当前C题入口为`03_code/export_candidates.py --output 07_delivery/新目录`（案例目录执行）；其模板读取使用已锁定openpyxl，实际写入不经openpyxl重保存，避免丢失原页眉等部件。独立回读入口为`03_code/verify_candidate_workbooks.py --directory 07_delivery/新目录`。完整项目需保留根tools，独立发布适配脚本时同时包含通用模块。专用渲染可选，不属于生产导出依赖。
+各题适配层负责稳定业务键映射、重复键/漏项、单位和约束检查，不将具体年度、地块或作物位置固化进通用工具。模板读取及独立回读可使用已锁定openpyxl；实际写入由通用导出器完成，保留未改的工作簿部件。专用渲染可选，不属于生产导出依赖。
 
 ## 显式清单打包
 
-`build_delivery.py --case 案例目录 --config 清单JSON --output 案例内07_delivery/新版本`按配置中的packages映射（包名到相对glob列表）生成ZIP及逐文件MANIFEST.json。新版本目录必须不存在；排除运行库和目录链接目标，完成ZIP读取与文件指纹回读。配置示例见templates/package_config.json。打包后必须另行解压验证编译、必要数据重建及结果读取；现有依赖下的独立目录验证不等于跨电脑首次安装。
+`build_delivery.py --case 案例目录 --config 清单JSON --output 案例内07_delivery/新版本`按配置中的packages映射（包名到相对glob列表）生成ZIP及逐文件MANIFEST.json。新版本目录必须不存在；排除运行库和目录链接目标，完成ZIP读取与文件指纹回读。配置示例见templates/package_config.json。打包后必须另行解压验证编译、必要数据重建及结果读取；记录实际验证所用的环境和依赖。
 
 workspace.json的active_case指定活动案例；context返回实际启动文档和资料位置。请以该配置的当前值为准，不在通用指引中固定某一道题或等待状态。不存在活动论文时返回null，不以空main.tex制造完成状态。
 
