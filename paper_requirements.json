@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "minimum_body_pages": 20,
+  "reference_target": 20,
+  "reference_tolerance": 2,
+  "require_background": true,
+  "require_restatement": true,
+  "require_bold_abstract_numbers": true,
+  "maximum_body_pages": 30,
+  "require_appendix": true
+}

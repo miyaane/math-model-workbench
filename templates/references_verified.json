@@ -1,0 +1,5 @@
+{
+  "schema_version": 1,
+  "instructions": "每条记录填写key/title/authors/year/doi（如有）/source_urls/checked_on/read_depth/status/supports。supports每项含section及claim。候选status=candidate；实际核实出处及对应论断后才标verified_for_claim。工具仅检查记录，不认证真实性。",
+  "references": []
+}

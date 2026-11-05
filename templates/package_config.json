@@ -1,0 +1,18 @@
+{
+  "packages": {
+    "paper_source": [
+      "06_paper/latex/**/*.tex",
+      "06_paper/latex/**/*.bib",
+      "06_paper/latex/**/*.pdf",
+      "06_paper/latex/code/*.py",
+      "05_figures/*.pdf"
+    ],
+    "research_support": [
+      "01_problem/**/*",
+      "02_models/**/*",
+      "03_code/**/*",
+      "04_experiments/**/*",
+      "06_paper/evidence.md"
+    ]
+  }
+}

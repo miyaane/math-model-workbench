@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "questions": [
+    {
+      "id": "Q1",
+      "requested_target": "",
+      "modeled_target": "",
+      "claim_scope": "",
+      "independent_unit": "",
+      "validation_unit": "",
+      "repeated_measurements": false,
+      "dependence_handling": "",
+      "evidence": []
+    }
+  ]
+}
