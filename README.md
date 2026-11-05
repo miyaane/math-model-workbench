@@ -16,6 +16,47 @@ Windows 电脑取得项目后，在项目根目录运行 `powershell -NoProfile 
 
 先读AGENTS.md、README.md、STATUS.md和WORKFLOW.md，再根据workspace.json读取活动案例的competition.md及STATUS.md。根competition.md是待导入模板，不覆盖活动案例配置。
 
+## 工作流总览
+
+```mermaid
+flowchart TD
+    A[提供赛题与全部附件] --> B[导入独立案例并核对赛事规则]
+    B --> C[逐问拆解 · 数据审计 · 文献与 GitHub 调研]
+    C --> D[方法取舍 · 可解释基线 · 实验与图谱规划]
+
+    subgraph R[逐问研究与 LaTeX 正文同步]
+        direction TB
+        E[推导与假设] --> F[代码实现与小规模验证]
+        F --> G[正式实验与结果解释]
+        G --> H[对照验证 · 优化 · 稳健性分析]
+        H --> I[科研图表与对应正文]
+        I --> J{本问证据完整？}
+        J -->|补充研究| E
+    end
+
+    D --> E
+    J -->|本问完成，推进其余小问| K{全部小问及完整初稿验收通过？}
+    K -->|尚有缺口| E
+    K -->|通过| L[anti-defensive-writing 表述专项检查]
+    L --> M[nature-reviewer 独立审稿]
+    M --> N[按审稿意见修改或补实验]
+    N --> O[表述复查 · 证据复核 · 编译与逐页检查]
+    O --> P{最终验收通过？}
+    P -->|按缺口返工| N
+    P -->|通过| Q[交付 LaTeX · PDF · 代码与支撑材料]
+
+    classDef preparation fill:#eef4fb,stroke:#4675a5,color:#18324e
+    classDef research fill:#edf7f3,stroke:#438570,color:#183e32
+    classDef gate fill:#fff5df,stroke:#b78a2d,color:#594015
+    classDef finish fill:#f2eef9,stroke:#8062a0,color:#3d2a54
+    class A,B,C,D preparation
+    class E,F,G,H,I research
+    class J,K,P gate
+    class L,M,N,O,Q finish
+```
+
+实验记录、结果登记与论文证据表贯穿研究和修改。完整初稿验收同时检查逐问论证、正文页数、整套图谱、引用、字体及实质性附录；缺项时继续补足。关键文献无法获取时会向你索取，其余工作继续推进。详细步骤与验收以 [WORKFLOW.md](WORKFLOW.md) 为准。
+
 ## 新题启动
 
 1. 提供新赛题及附件的本机文件夹路径。助手将为新题创建独立案例，并把资料复制到案例内的 `00_inputs/`。
