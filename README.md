@@ -42,9 +42,9 @@ flowchart TD
         AllDone{"全部小问完成？<br/>(逐问矩阵清零)"}
 
         Loop --> QGate
-        QGate -- "补充研究/修正" -.-> Loop
-        QGate -- "本问通过" --> AllDone
-        AllDone -- "推进下一小问" -.-> Loop
+        QGate -.->|"补充研究/修正"| Loop
+        QGate -->|"本问通过"| AllDone
+        AllDone -.->|"推进下一小问"| Loop
     end
 
     %% 阶段三：初稿集成与规范门禁
@@ -74,17 +74,17 @@ flowchart TD
         Deliver(["<b>最终交付物归档</b><br/>LaTeX 源码包 · 高清无损 PDF · 核心可复现代码 · 支撑材料"])
 
         Verify --> FinalGate
-        FinalGate -- "通过" --> Deliver
+        FinalGate -->|"通过"| Deliver
     end
 
     %% 跨阶段主干连接与流转
     P1 ==> Loop
-    AllDone -- "全部完成 · 进入全文集成" ==> Draft
-    GateAll -- "尚存缺口 (补实验/扩充正文)" -.-> Loop
-    GateAll -- "初稿全部达标" ==> AntiDef
-    Refine -- "需补充实验数据" -.-> Loop
+    AllDone ==>|"全部完成 · 进入全文集成"| Draft
+    GateAll -.->|"尚存缺口 (补实验/扩充正文)"| Loop
+    GateAll ==>|"初稿全部达标"| AntiDef
+    Refine -.->|"需补充实验数据"| Loop
     PostCheck ==> Verify
-    FinalGate -- "未通过 · 存在排版或证据缺口" -.-> Refine
+    FinalGate -.->|"未通过 · 存在排版或证据缺口"| Refine
 
     %% 样式与配色定义 (现代学术与工程配色体系)
     classDef prepStyle fill:#f8fafc,stroke:#64748b,stroke-width:1.5px,color:#0f172a;
