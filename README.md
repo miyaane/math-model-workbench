@@ -18,94 +18,99 @@ Windows 电脑取得项目后，在项目根目录运行 `powershell -NoProfile 
 
 ## 工作流总览
 
+![数学建模全流程架构总览](docs/images/workflow.svg)
+
+<details>
+<summary><b>查看可编辑 Mermaid 架构源码</b></summary>
+
 ```mermaid
-flowchart TD
-    %% 阶段一：研判与探索
-    subgraph P1 ["阶段 I · 输入研判与规划 (Problem Framing & Baseline)"]
+flowchart TB
+    %% 阶段 I：输入研判与基线规划
+    subgraph S1 ["<b>【 阶段 Ⅰ 】赛题研判与基线规划 (Ingestion & Baseline)</b>"]
         direction LR
-        A["<b>赛题与附件导入</b><br/>多源数据 · 赛题规则 · 官方模板"] --> B["<b>题目拆解与调研</b><br/>关键词拆解 · 文献研读 · GitHub 对照"]
-        B --> C["<b>数据审计与基线</b><br/>清洗与探查 · 可解释基线 · 实验/图谱规划"]
+        P1_1[("🗃️ 原始数据仓<br/><i>只读数据 · 校验指纹</i>")]
+        P1_2["📋 赛题规则审计<br/><i>赛事规范 · 格式/页数限制</i>"]
+        P1_3[/"📚 学术文献与GitHub调研<br/><i>经典理论 · SOTA对照 · 许可证</i>"/]
+        P1_4["📐 逐问解构与基线模型<br/><i>任务拆解矩阵 · 可解释参考基线</i>"]
+        P1_1 --> P1_2 --> P1_3 --> P1_4
     end
 
-    %% 阶段二：逐问研写双轨闭环
-    subgraph P2 ["阶段 II · 逐问研写双轨推进 (Iterative Research & Writing)"]
+    %% 阶段 II：逐问研写双轨协同引擎 (天然阶梯双轨并排，杜绝嵌套direction塌缩)
+    subgraph S2 ["<b>【 阶段 Ⅱ 】逐问研写双轨协同引擎 (Dual-Track Research & Writing Engine)</b>"]
         direction TB
-        subgraph Loop ["<b>单问研究与正文同步六环</b> (各小问独立推进)"]
-            direction LR
-            D["① 假设与机理推导<br/><i>同步方法草稿</i>"] --> E["② 算法实现与小试<br/><i>小规模可运行验证</i>"]
-            E --> F["③ 正式实验与求解<br/><i>全面参数与优化</i>"]
-            F --> G["④ 对照验证与分析<br/><i>消融与稳健性</i>"]
-            G --> H["⑤ 科研级图谱生成<br/><i>证据链对齐</i>"]
-            H --> I["⑥ LaTeX 正文同步更新<br/><i>推导/结果/解释</i>"]
-        end
-        QGate{"单问证据完整？<br/>(结果/机制/验证/图文)"}
-        AllDone{"全部小问完成？<br/>(逐问矩阵清零)"}
 
-        Loop --> QGate
-        QGate -.->|"补充研究/修正"| Loop
-        QGate -->|"本问通过"| AllDone
-        AllDone -.->|"推进下一小问"| Loop
+        %% 双轨节点对齐
+        R1["<b>① 机理假设与推导</b><br/><i>量纲分析 · 闭合方程组</i>"] <-->|"推导公式同步"| W1["<b>① 模型段落与符号系统</b><br/><i>公式入稿 · 符号对齐</i>"]
+        R1 --> R2[["<b>② 算法实现与小试验证</b><br/><i>先小试跑通 · 显式失败</i>"]]
+        W1 --> W2["<b>② 算法说明与实验配置</b><br/><i>参数标定 · 对照基线实刊</i>"]
+        R2 <-->|"小试算法落盘"| W2
+        R2 --> R3[["<b>③ 正式求解与消融稳健</b><br/><i>全面优化 · 灵敏度分析</i>"]]
+        W2 --> W3["<b>③ 科研图谱与机制解释</b><br/><i>矢量级图表 · 拒绝套话</i>"]
+        R3 <-->|"图谱机制支撑"| W3
+
+        %% 门禁与迭代
+        Gate_Q{{"⚖️ 单问证据完整性检验<br/><i>推导/求解/解释/图表/正文是否全部闭环？</i>"}}
+        Gate_All{{"🔄 全部小问推进完成？<br/><i>赛题任务矩阵是否已全部清零</i>"}}
+
+        R3 --> Gate_Q
+        W3 --> Gate_Q
+        Gate_Q -.->|"存在证据缺口 · 补实验/正文"| R1
+        Gate_Q ==>|"本问闭环"| Gate_All
+        Gate_All -.->|"推进下一小问"| R1
     end
 
-    %% 阶段三：初稿集成与规范门禁
-    subgraph P3 ["阶段 III · 完整初稿集成与规范门禁 (Draft Assembly & Gate)"]
+    %% 阶段 III：初稿硬门禁与独立审稿体系 (规范文案，明确anti-defensive-writing)
+    subgraph S3 ["<b>【 阶段 Ⅲ 】初稿硬门禁与同行审稿体系 (Quality & Peer Review)</b>"]
         direction TB
-        Draft["<b>全文结构与内容集成</b><br/>整合各问研究 · 核心推导 · 结构化附录"]
-        GateAll{"<b>完整初稿验收门禁</b><br/>• 正文页数达标 (官方规则优先，默认20-30页)<br/>• 真实核准引用 (~20条真实文献，列必引)<br/>• 精美科研图谱 (无冗余装饰，证据可溯)<br/>• 核心复现代码 (算法与求解实刊附录)"}
-        Draft --> GateAll
+
+        Gate_Draft{{"🛡️ 完整初稿四要素硬门禁<br/>• 正文页数达标 (官方规则优先, 默认20-30页)<br/>• 真实核准引用 (~20条真实文献, 列必引)<br/>• 丰富科研图谱 (信息丰富, 拒绝装饰图)<br/>• 核心代码实刊 (附录刊载关键模型与算法)"}}
+
+        Rev_AD[["🔍 anti-defensive-writing 专项表述检查<br/><i>学术语调修正：清除过度防御与套话</i>"]]
+        Rev_NR[["🎓 nature-reviewer 角色独立模拟审稿<br/><i>诊断模型逻辑漏洞与论证短板</i>"]]
+        Rev_Fix["🛠️ 针对性精修与表述复查<br/><i>补齐缺陷实验 · 修订后由 anti-defensive-writing 复查防御性表述</i>"]
+
+        Gate_Draft ==>|"初稿达标 · 准予送审"| Rev_AD
+        Rev_AD --> Rev_NR --> Rev_Fix
     end
 
-    %% 阶段四：专项检查与独立审稿
-    subgraph P4 ["阶段 IV · 专项审查与独立同行评议 (Dual Review & Polishing)"]
-        direction TB
-        AntiDef["<b>表述专项检查</b><br/>anti-defensive-writing<br/>清理套话与过度防御辩解"]
-        NatRev["<b>独立模拟审稿</b><br/>nature-reviewer 角色盲审<br/>诊断模型漏洞与论证短板"]
-        Refine["<b>针对性精修与补算</b><br/>补齐缺陷实验 · 修正机理推导"]
-        PostCheck["<b>审稿后表述复查</b><br/>anti-defensive-writing<br/>确保修改未引入新防御辩解"]
+    %% 阶段 IV：最终编译验收与成果交付 (克制客观用语)
+    subgraph S4 ["<b>【 阶段 Ⅳ 】最终编译验收与成果交付 (Verification & Delivery)</b>"]
+        direction LR
+        Final_Check[["🔬 最终编译验收与排版核查<br/><i>XeLaTeX 编译 · 宋体/Times 规范字体 · 证据链复核</i>"]]
+        Final_Gate{{"🏁 交付终审门禁<br/><i>排版无破损 · 图文100%可溯</i>"}}
+        Deliver_Pkg(["📦 完整复现与成果交付包<br/><i>LaTeX 源码包 · 矢量 PDF · 核心可复现程序 · 完整支撑材料</i>"])
 
-        AntiDef --> NatRev --> Refine --> PostCheck
+        Final_Check --> Final_Gate
+        Final_Gate -->|"终验合格 · 正式交付"| Deliver_Pkg
     end
 
-    %% 阶段五：终审逐页核验与成果交付
-    subgraph P5 ["阶段 V · 终验核查与交付归档 (Verification & Delivery)"]
-        direction TB
-        Verify["<b>证据复核与排版逐页核验</b><br/>证据链一致性 · XeLaTeX 编译 · SimSun/Times New Roman 字体核查"]
-        FinalGate{"<b>最终交付验收？</b><br/>(排版无错/图文对齐/无缺口)"}
-        Deliver(["<b>最终交付物归档</b><br/>LaTeX 源码包 · 高清无损 PDF · 核心可复现代码 · 支撑材料"])
+    %% 跨阶段主干推进与严密闭环 (端点连接，顺序锁定)
+    P1_4 ==>|"基线确立 · 启动研究"| R1
+    Gate_All ==>|"全部小问完成 · 全文集成"| Gate_Draft
+    Gate_Draft -.->|"初稿缺口 · 补实验/正文"| R1
+    Rev_Fix -.->|"审稿质疑 · 补充实验"| R1
+    Rev_Fix ==>|"审稿意见完全闭环"| Final_Check
+    Final_Gate -.->|"排版或证据不合格返工"| Rev_Fix
 
-        Verify --> FinalGate
-        FinalGate -->|"通过"| Deliver
-    end
+    %% 针对暗黑模式与亮色模式深度优化的“高对比宝石调色盘”
+    classDef blueCard fill:#0f2744,stroke:#38bdf8,stroke-width:2px,color:#f8fafc;
+    classDef greenCard fill:#063726,stroke:#34d399,stroke-width:2px,color:#f8fafc;
+    classDef purpleCard fill:#3b0764,stroke:#c084fc,stroke-width:2px,color:#f8fafc;
+    classDef amberGate fill:#451a03,stroke:#fbbf24,stroke-width:2.5px,color:#fef3c7;
+    classDef deliveryCard fill:#022c22,stroke:#22c55e,stroke-width:2.5px,color:#ecfdf5;
 
-    %% 跨阶段主干连接与流转
-    P1 ==> Loop
-    AllDone ==>|"全部完成 · 进入全文集成"| Draft
-    GateAll -.->|"尚存缺口 (补实验/扩充正文)"| Loop
-    GateAll ==>|"初稿全部达标"| AntiDef
-    Refine -.->|"需补充实验数据"| Loop
-    PostCheck ==> Verify
-    FinalGate -.->|"未通过 · 存在排版或证据缺口"| Refine
+    class P1_1,P1_2,P1_3,P1_4 blueCard;
+    class R1,R2,R3,W1,W2,W3 greenCard;
+    class Rev_AD,Rev_NR,Rev_Fix purpleCard;
+    class Gate_Q,Gate_All,Gate_Draft,Final_Gate amberGate;
+    class Final_Check,Deliver_Pkg deliveryCard;
 
-    %% 样式与配色定义 (现代学术与工程配色体系)
-    classDef prepStyle fill:#f8fafc,stroke:#64748b,stroke-width:1.5px,color:#0f172a;
-    classDef researchStyle fill:#f0fdf4,stroke:#16a34a,stroke-width:1.5px,color:#14532d;
-    classDef gateStyle fill:#fffbeb,stroke:#d97706,stroke-width:2px,color:#78350f;
-    classDef reviewStyle fill:#faf5ff,stroke:#9333ea,stroke-width:1.5px,color:#581c87;
-    classDef deliveryStyle fill:#eff6ff,stroke:#2563eb,stroke-width:2px,color:#1e3a8a;
-
-    class A,B,C prepStyle;
-    class D,E,F,G,H,I researchStyle;
-    class QGate,AllDone,GateAll,FinalGate gateStyle;
-    class AntiDef,NatRev,Refine,PostCheck reviewStyle;
-    class Verify,Deliver deliveryStyle;
-
-    style P1 fill:#f8fafc,stroke:#94a3b8,stroke-width:1.5px,stroke-dasharray: 4 4;
-    style P2 fill:#f0fdf4,stroke:#4ade80,stroke-width:1.5px,stroke-dasharray: 4 4;
-    style Loop fill:#ffffff,stroke:#86efac,stroke-width:1px;
-    style P3 fill:#fffdf5,stroke:#fcd34d,stroke-width:1.5px,stroke-dasharray: 4 4;
-    style P4 fill:#faf5ff,stroke:#c084fc,stroke-width:1.5px,stroke-dasharray: 4 4;
-    style P5 fill:#f0f9ff,stroke:#60a5fa,stroke-width:1.5px,stroke-dasharray: 4 4;
+    style S1 fill:#0b192c,stroke:#1e40af,stroke-width:2px;
+    style S2 fill:#062319,stroke:#059669,stroke-width:2px;
+    style S3 fill:#1e0e38,stroke:#7c3aed,stroke-width:2px;
+    style S4 fill:#062227,stroke:#0284c7,stroke-width:2px;
 ```
+</details>
 
 实验记录、结果登记与论文证据表贯穿研究和修改。完整初稿验收同时检查逐问论证、正文页数、整套图谱、引用、字体及实质性附录；缺项时继续补足。关键文献无法获取时会向你索取，其余工作继续推进。详细步骤与验收以 [WORKFLOW.md](WORKFLOW.md) 为准。
 
